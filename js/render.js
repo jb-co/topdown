@@ -78,7 +78,7 @@ GAME.Renderer = (function () {
                     offsetX = offsetY = 0;
                 }
 
-                context.drawImage(GAME.Manager.getImage(), (e.currentFrame * (e.width + 1)) + e.cropX, (e.width + 1) * e.dir + e.cropY, e.width, e.height, e.x - offsetX, e.y - offsetY, e.width, e.height);
+                context.drawImage(GAME.Manager.getImage(), 1 + e.dir*34 + e.currentFrame*17, 1 + e.cropY, e.width, e.height, e.x - offsetX, e.y - offsetY, e.width, e.height);
 
             }
 

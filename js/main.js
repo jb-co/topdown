@@ -57,7 +57,7 @@ GAME.Manager = (function () {
             
                 entities.push(GAME.Component.player(40, 80));
                 entities.push(GAME.Component.blob(100, 120));
-                entities.push(GAME.Component.blob(300, 100));
+                entities.push(GAME.Component.kirby(300, 100));
                 entities.push(GAME.Component.blob(200, 80));
        
                 gameLoop();
@@ -66,11 +66,11 @@ GAME.Manager = (function () {
         },
 
         getScrollX = function () {
-            return scrollX;
+            return this.scrollX;
         },
     
         getScrollY = function () {
-            return scrollY;
+            return this.scrollY;
         },
     
         getImage = function () {
@@ -79,6 +79,17 @@ GAME.Manager = (function () {
     
         getEntities = function () {
             return entities;
+        },
+     
+        getEntityMapPos = function (entity) {
+            
+            if (entity.isPlayer) {
+                return {x : entity.x + this.scrollX,
+                        y : entity.y + this.scrollY };
+            }
+            
+            return {x : entity.x,
+                    y : entity.y };
         };
     
     return {
@@ -87,6 +98,7 @@ GAME.Manager = (function () {
         getScrollY : getScrollY,
         getImage : getImage,
         getEntities : getEntities,
+        getEntityMapPos : getEntityMapPos,
         scrollX : scrollX,
         scrollY : scrollY
     };
