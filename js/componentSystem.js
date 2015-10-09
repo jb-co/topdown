@@ -74,7 +74,7 @@ GAME.Component = (function () {
             var scrollX = GAME.Manager.scrollX,
                 scrollY = GAME.Manager.scrollY;
             
-            return (this.x + this.width*2 > scrollX && this.x - this.width*2 < scrollX + GAME.screenSize.width && this.y + this.height*2 > scrollY && this.y - this.height*2 < scrollY + GAME.screenSize.height);
+            return (this.x + this.width*4 > scrollX && this.x - this.width*4 < scrollX + GAME.screenSize.width && this.y + this.height*4 > scrollY && this.y - this.height*4 < scrollY + GAME.screenSize.height);
         }
           
     }

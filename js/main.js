@@ -6,9 +6,7 @@ GAME.Manager = (function () {
     'use strict';
  
     var counter = 0,
-        now = 0,
         before = 0,
-        lastUpdate = 0,
         scrollX = 0,
         scrollY = 0,
         image,
@@ -18,19 +16,25 @@ GAME.Manager = (function () {
             return window.performance && window.performance.now ? window.performance.now() : new Date().getTime();
         },
         
+        update = function () {
+            var i,
+                entity;
+
+            for (i = 0; i < entities.length; i += 1) {
+                entity = entities[i];
+                if (entity.hasOwnProperty('update')) {
+                    entity.update();
+                }
+            }
+        },
+        
         gameLoop = function () {
              
             window.requestAnimationFrame(gameLoop);
             
-            var delta = (now - before) / 1000,
-                deltaF = (now - lastUpdate),
-                mx = 0,
-                my = 0,
-                i = 0,
-                entity;
+            var now = timestamp(),
+                delta = (now - before) / 1000;
             
-            now = timestamp();
-
             counter += 1;
 
             if (delta >= 1) {
@@ -39,24 +43,9 @@ GAME.Manager = (function () {
                 before = now;
             }
 
-            for (i = 0; i < entities.length; i += 1) {
-                entity = entities[i];
-                if (entity.hasOwnProperty('update')) {
-                    entity.update();
-                }
-            }
-
-            lastUpdate = now;
-
+            update();
 
             GAME.Renderer.render();
-
-            if (deltaF < 1000 / 60) {
-                setTimeout(function () {}, (1000 / 60 - deltaF));
-            }
-
-
-
 
         },
         
@@ -76,10 +65,6 @@ GAME.Manager = (function () {
             };
         },
 
-        update = function () {
-
-        },
-  
         getScrollX = function () {
             return scrollX;
         },
