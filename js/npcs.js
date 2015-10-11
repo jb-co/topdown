@@ -7,7 +7,7 @@ GAME.Component.blob = function (arg_x, arg_y) {
     var turnCounter = Math.random()*12,
         turnTime = 32,
         isStuck = false,
-        speed = 0.6,
+        speed = 0.5,
         mx = 0,
         my = 0;
 
@@ -38,7 +38,7 @@ GAME.Component.blob = function (arg_x, arg_y) {
                 deltaY = deltaY / len;
                 
                 turnCounter = 0;
-                speed = 1;
+                speed = 0.8;
                  
                 mx = deltaX;
                
@@ -66,13 +66,11 @@ GAME.Component.blob = function (arg_x, arg_y) {
             else this.dir = Math.round(2 + mx);
 
             
-            if (!this.isCollision(this.x, this.y, mx, my)) {
+            if (!this.isCollision(this.x, this.y, mx, 0)) {
                 this.x += mx * speed;
-                this.y += my * speed;
-                isStuck = false;
             }
-            else {
-                isStuck = true;
+            if (!this.isCollision(this.x, this.y, 0, my)) {
+                this.y += my * speed;
             }
 
         },

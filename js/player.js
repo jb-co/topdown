@@ -4,6 +4,8 @@ GAME.Component.player = function (arg_x, arg_y) {
     'use strict';
     
     //private goes here
+    var speed = 1.2;
+    var len = Math.sqrt(2);
     
     return GAME.Component.createEntity({
         x : arg_x,
@@ -19,40 +21,22 @@ GAME.Component.player = function (arg_x, arg_y) {
                 this.currentFrame = (this.currentFrame + 1) % 2;
             }
             this.moveCounter += 1;
+            
 
             //korta ner namnen for faen.
-            if (!this.isCollision(this.x, this.y, mx, my)) {
+            if (!this.isCollision(this.x, this.y, mx * speed, my * speed)) {
 
                 var scrollX = GAME.Manager.scrollX,
                     scrollY = GAME.Manager.scrollY,
                     screenSize = GAME.screenSize;
                 
-                if (mx > 0) {
-                    if (scrollX < GAME.mapSize.x * GAME.tileSize() - screenSize.width && this.x >= screenSize.width / 2) {
-                        GAME.Manager.scrollX += mx;
-                    } else {
-                        this.x += mx;
-                    }
-                    this.dir = 3;
-                }
-
-                if (mx < 0) {
-
-                    if (scrollX > 0 && this.x <= screenSize.width / 2) {
-                        GAME.Manager.scrollX += mx;
-                    } else {
-                        this.x += mx;
-                    }
-                    
-                    this.dir = 1;
-                }
-
+                
                 if (my > 0) {
 
                     if (scrollY < GAME.mapSize.y * GAME.tileSize() - screenSize.height && this.y >= screenSize.height / 2) {
-                        GAME.Manager.scrollY += my;
+                        GAME.Manager.scrollY += my * speed;
                     } else {
-                        this.y += my;
+                        this.y += my * speed;
                     }
 
                     this.dir = 0;
@@ -63,14 +47,34 @@ GAME.Component.player = function (arg_x, arg_y) {
                 if (my < 0) {
 
                     if (scrollY > 0 && this.y <= screenSize.height / 2) {
-                        GAME.Manager.scrollY += my;
+                        GAME.Manager.scrollY += my * speed;
                     } else {
-                        this.y += my;
+                        this.y += my * speed;
                     }
 
 
                     this.dir = 2;
 
+                }
+                
+                if (mx > 0) {
+                    if (scrollX < GAME.mapSize.x * GAME.tileSize() - screenSize.width && this.x >= screenSize.width / 2) {
+                        GAME.Manager.scrollX += mx * speed;
+                    } else { 
+                        this.x += mx * speed;
+                    }
+                    this.dir = 3;
+                }
+
+                if (mx < 0) {
+
+                    if (scrollX > 0 && this.x <= screenSize.width / 2) {
+                        GAME.Manager.scrollX += mx * speed;
+                    } else {
+                        this.x += mx * speed;
+                    }
+
+                    this.dir = 1;
                 }
 
             }
@@ -93,16 +97,23 @@ GAME.Component.player = function (arg_x, arg_y) {
             } else if (GAME.Input.keyUp()) {
                 my = -1;
             }
+            
+            if(mx != 0 && my != 0){
+                
 
-
-            //ska inte se ut sa har..
-            if (mx !== 0) {
-                this.move(mx, 0);
+                mx = mx / len;
+                my = my / len;
             }
+
+          
+            //ska inte se ut sa har..
+            
             if (my !== 0) {
                 this.move(0, my);
             }
-            
+            if (mx !== 0) {
+                this.move(mx, 0);
+            }
         }
     }, [GAME.Component.entity, GAME.Component.mob, GAME.Component.player]);
         

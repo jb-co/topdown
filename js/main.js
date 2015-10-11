@@ -46,6 +46,8 @@ GAME.Manager = (function () {
             update();
 
             GAME.Renderer.render();
+            
+        
 
         },
         
@@ -59,7 +61,7 @@ GAME.Manager = (function () {
                 entities.push(GAME.Component.blob(100, 120));
                 entities.push(GAME.Component.kirby(300, 100));
                 entities.push(GAME.Component.blob(200, 80));
-       
+           
                 gameLoop();
            
             };

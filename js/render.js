@@ -4,23 +4,30 @@ GAME.Renderer = (function () {
     'use strict';
     
     var canvas = document.getElementById("gameCanvas"),
-        context = canvas.getContext("2d"),
+        context = canvas.getContext('2d'),
         fpsNode = document.getElementById("fps"),
+        
+        bufferCanvas = document.createElement('canvas'),
+        bufferContext = bufferCanvas.getContext('2d'),
+  
         
         drawMap = function () {
 
-            context.fillStyle = "#999";
-            context.fillRect(0, 0, 320, 200);
-
-            var scrollX = GAME.Manager.scrollX,
-                scrollY = GAME.Manager.scrollY,
+            var scrollX = GAME.Manager.scrollX >> 0, 
+                scrollY = GAME.Manager.scrollY >> 0,
                 left = scrollX >> 4,
                 top = scrollY >> 4,
                 x,
                 y;
+            
 
-
-
+            var cropX = 0,
+                cropY = 17*3 + 1;
+      
+              
+          // bufferContext.translate(translateX, translateY);
+            
+            
             for (y = top; y < top + 15; y += 1) {
 
                 for (x = left; x < left + 17; x += 1) {
@@ -30,27 +37,41 @@ GAME.Renderer = (function () {
                     switch (level1[x + y * 32]) {
 
                         case 0:
-                            context.fillStyle = "#009900";
+                            //bufferContext.fillStyle = "#009900";
+                            cropX = 1;
+                           
                             break;
                         case 1:
-                            context.fillStyle = "#CCC";
+                            //bufferContext.fillStyle = "#CCC";
+                            cropX = 17*1 + 1;
+                         
                             break;
                         case 2:
-                            context.fillStyle = "#888";
+                            //bufferContext.fillStyle = "#888";
+                            cropX = 17*2 + 1;
+                           
                             break;
                         case 3:
-                            context.fillStyle = "#444";
+                            //bufferContext.fillStyle = "#444";
+                            cropX = 17*1 + 1;
                             break;
 
 
                     }
 
-
-                    context.fillRect(x * GAME.tileSize() - scrollX, y * GAME.tileSize() - scrollY, GAME.tileSize(), GAME.tileSize());
+       
+                    
+                    bufferContext.drawImage(GAME.Manager.getImage(), cropX, cropY, 16, 16, (x * GAME.tileSize() - scrollX),
+                                            (y * GAME.tileSize() - scrollY), GAME.tileSize(), GAME.tileSize());
 
                 }
 
             }
+            
+
+            context.drawImage(bufferCanvas, 0, 0);
+         
+           
 
         },
         
@@ -71,14 +92,15 @@ GAME.Renderer = (function () {
                 }
                
                 
-                offsetX = GAME.Manager.scrollX;
-                offsetY = GAME.Manager.scrollY;
+                offsetX = GAME.Manager.scrollX >> 0;
+                offsetY = GAME.Manager.scrollY >> 0;
 
                 if (e.hasOwnProperty('isPlayer')) {
                     offsetX = offsetY = 0;
                 }
 
-                context.drawImage(GAME.Manager.getImage(), 1 + e.dir*34 + e.currentFrame*17, 1 + e.cropY, e.width, e.height, e.x - offsetX, e.y - offsetY, e.width, e.height);
+                context.drawImage(GAME.Manager.getImage(), 1 + e.dir*34 + e.currentFrame*17, 1 + e.cropY, e.width, e.height, 
+                                  (e.x - offsetX) >> 0, (e.y - offsetY) >> 0,  e.width, e.height);
 
             }
 
@@ -88,6 +110,7 @@ GAME.Renderer = (function () {
         render = function () {
             drawMap();
             drawEntities();
+            
         },
     
         updateFPS = function (value) {
@@ -98,8 +121,29 @@ GAME.Renderer = (function () {
         
     
   
+   
+    canvas.style.width = 768+"px";
+    canvas.style.height = 672 + "px";
     canvas.width = GAME.screenSize.width;
     canvas.height = GAME.screenSize.height;
+    
+    context.imageSmoothingEnabled = false;
+    window.devicePixelRatio = 1;
+    
+    bufferCanvas.width = canvas.width;
+    bufferCanvas.height = canvas.height;
+    
+    
+    context.lineWidth = 1+"px";
+    context.strokeWidth = 1+"px";
+    bufferContext.lineWidth = 1+"px";
+    bufferContext.strokeWidth = 1+"px";
+    bufferContext.imageSmoothingEnabled = false;
+    
+
+    
+    
+  
     
     
     return { render : render,
