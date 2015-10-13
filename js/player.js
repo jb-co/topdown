@@ -6,6 +6,7 @@ GAME.Component.player = function (arg_x, arg_y) {
     //private goes here
     var speed = 1.2;
     var len = Math.sqrt(2);
+    var cooldownCounter = 0;
     
     return GAME.Component.createEntity({
         x : arg_x,
@@ -14,6 +15,8 @@ GAME.Component.player = function (arg_x, arg_y) {
         cropY : 0,
         isPlayer : true,
         isOffscreen : false,
+        isCooledDown : true,
+        cooldown : 10,
 
         move: function (mx, my) {
 
@@ -85,6 +88,22 @@ GAME.Component.player = function (arg_x, arg_y) {
         update : function () {
             var mx = 0,
                 my = 0;
+            
+            if(this.hasFired){
+                cooldownCounter += 1;   
+                this.isCooledDown = false;
+            }
+            
+            if(cooldownCounter >= this.cooldown){
+                cooldownCounter = 0;
+                this.isCooledDown = true;
+                this.hasFired = false;
+            }
+            
+            if(GAME.Input.keySpace()){
+                this.hasFired = true; 
+            }
+            
 
             if (GAME.Input.keyRight()) {
                 mx = 1;
@@ -115,7 +134,7 @@ GAME.Component.player = function (arg_x, arg_y) {
                 this.move(mx, 0);
             }
         }
-    }, [GAME.Component.entity, GAME.Component.mob, GAME.Component.player]);
+    }, [GAME.Component.entity, GAME.Component.mob]);
         
 
   

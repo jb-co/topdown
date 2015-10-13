@@ -30,14 +30,14 @@ GAME.Component = (function () {
     
     
     //Entities 
-    var entity ={
+    var entity = {
         width : 16,
         height : 16,
         frames : 2,
         x : 0,
         y: 0,
         currentFrame : 0,
-        dir : 0,
+        dir : 0
         
     };
     
@@ -45,8 +45,7 @@ GAME.Component = (function () {
     
     var mob = {
         moveCounter : 0,
-        isOffscreen : true,
-        
+        hasFired : false,
         isCollision : function (x, y, mx, my) {
 
             var mPos = GAME.Manager.getEntityMapPos(this);
@@ -71,22 +70,11 @@ GAME.Component = (function () {
 
                 if(currentTile > 0)
                     return true;
-
             }       
             
-            
-
             return false;
 
-        },
-        
-        isOnscreen : function () {
-            var scrollX = GAME.Manager.scrollX,
-                scrollY = GAME.Manager.scrollY;
-            
-            return (this.x + this.width*4 > scrollX && this.x - this.width*4 < scrollX + GAME.screenSize.width && this.y + this.height*4 > scrollY && this.y - this.height*4 < scrollY + GAME.screenSize.height);
-        }
-          
+        },    
     }
                   
     

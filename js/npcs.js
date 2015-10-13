@@ -1,5 +1,18 @@
 var GAME = GAME || {};
 
+GAME.Component.npc = GAME.Component.createEntity({
+        isOffscreen : true,
+        isOnscreen : function () {
+            var scrollX = GAME.Manager.scrollX,
+                scrollY = GAME.Manager.scrollY;
+
+            return (this.x + this.width * 4 > scrollX && this.x - this.width * 4 < scrollX + GAME.screenSize.width && this.y + this.height * 4 > scrollY && this.y - this.height * 4 < scrollY + GAME.screenSize.height);
+        }
+        
+    }, [GAME.Component.entity]);
+    
+
+
 GAME.Component.blob = function (arg_x, arg_y) {
 
     'use strict';
@@ -86,7 +99,7 @@ GAME.Component.blob = function (arg_x, arg_y) {
             }
         }
 
-    }, [GAME.Component.entity, GAME.Component.mob]);
+    }, [GAME.Component.npc, GAME.Component.mob]);
 };
 
 GAME.Component.kirby = function (arg_x, arg_y) {
@@ -163,5 +176,63 @@ GAME.Component.kirby = function (arg_x, arg_y) {
             }
         }
 
-    }, [GAME.Component.entity, GAME.Component.mob]);
+    }, [GAME.Component.npc, GAME.Component.mob]);
+};
+
+GAME.Component.projectile = function (arg_x, arg_y, owner) {
+
+
+    if(owner.dir === 0) arg_y = arg_y + owner.height + 4;
+    if(owner.dir === 1) {
+        arg_x = arg_x - 4;
+        arg_y = (arg_y + owner.height / 2);
+    }
+    if(owner.dir === 2) {
+        arg_y = arg_y - 4;
+        arg_x = (arg_x + owner.width / 2);
+    } else if(owner.dir === 3) {
+        arg_x = arg_x + owner.width + 4;
+        arg_y = (arg_y + owner.height / 2);
+    }
+    
+    
+    return GAME.Component.createEntity({
+        
+        canDamage : true,
+        cropX : 1,
+        cropY : 1,
+        width : 4,
+        height : 4,
+        x : arg_x,
+        y : arg_y,
+        owner : owner,
+        dir : owner.dir,
+        isOffscreen : false,
+        speed : 8,
+     
+        
+        move : function(){
+            switch(this.dir){
+                    
+                case 0:
+                    this.y += this.speed;
+                    break;
+                case 1: 
+                    this.x -= this.speed;
+                    break;
+                case 2:
+                    this.y -= this.speed;
+                    break;
+                case 3: 
+                    this.x += this.speed;
+                    break;
+        
+            }
+        },
+        
+        update : function(){
+            this.move();   
+        }
+        
+    }, [GAME.Component.mob, GAME.Component.npc]);
 };

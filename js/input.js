@@ -16,6 +16,9 @@ GAME.Input = (function () {
         },
         keyDown = function(){
             return keyState[40];
+        },
+        keySpace = function(){
+          return keyState[32];  
         };
     
     document.addEventListener("keydown", function(e){
@@ -33,6 +36,7 @@ GAME.Input = (function () {
         keyLeft : keyLeft,
         keyRight: keyRight,
         keyUp : keyUp,
-        keyDown : keyDown
+        keyDown : keyDown,
+        keySpace : keySpace
     };
 })(window);

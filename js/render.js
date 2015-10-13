@@ -58,10 +58,7 @@ GAME.Renderer = (function () {
                 }
 
             }
-            
 
-            context.drawImage(bufferCanvas, 0,0);
-         
            
 
         },
@@ -90,10 +87,11 @@ GAME.Renderer = (function () {
                     offsetX = offsetY = 0;
                 }
 
-                context.drawImage(GAME.Manager.getImage(), 1 + e.dir*34 + e.currentFrame*17, 1 + e.cropY, e.width, e.height, 
+                bufferContext.drawImage(GAME.Manager.getImage(), 1 + e.dir*34 + e.currentFrame*17, 1 + e.cropY, e.width, e.height, 
                                   (e.x - offsetX) >> 0, (e.y - offsetY) >> 0,  e.width, e.height);
 
             }
+            
 
         },
 
@@ -101,6 +99,8 @@ GAME.Renderer = (function () {
         render = function () {
             drawMap();
             drawEntities();
+            
+            context.drawImage(bufferCanvas, 0, 0);
             
         },
     

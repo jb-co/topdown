@@ -25,6 +25,12 @@ GAME.Manager = (function () {
                 if (entity.hasOwnProperty('update')) {
                     entity.update();
                 }
+                
+                if(entity.hasFired && entity.isCooledDown){
+                  
+                    entities.push(GAME.Component.projectile(getEntityMapPos(entity).x, getEntityMapPos(entity).y, entity));
+                    
+                }
             }
         },
         
@@ -86,8 +92,8 @@ GAME.Manager = (function () {
         getEntityMapPos = function (entity) {
             
             if (entity.isPlayer) {
-                return {x : entity.x + this.scrollX,
-                        y : entity.y + this.scrollY };
+                return {x : entity.x + GAME.Manager.scrollX,
+                        y : entity.y + GAME.Manager.scrollY };
             }
             
             return {x : entity.x,
