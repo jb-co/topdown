@@ -41,7 +41,6 @@ GAME.Component = (function () {
         
     };
     
-    //sooooo  entity > mob > npc/player    ;bara npc har offscreen metod
     
     var mob = {
         moveCounter : 0,

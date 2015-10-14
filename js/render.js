@@ -13,15 +13,13 @@ GAME.Renderer = (function () {
         
         drawMap = function () {
 
-            var scrollX = GAME.Manager.scrollX >> 0, 
+            var scrollX = GAME.Manager.scrollX >> 0,
                 scrollY = GAME.Manager.scrollY >> 0,
                 left = scrollX >> 4,
                 top = scrollY >> 4,
                 x,
-                y;
-            
-
-            var cropX = 0,
+                y,
+                cropX = 0,
                 cropY = 17*8 + 1;
             
             
@@ -68,6 +66,7 @@ GAME.Renderer = (function () {
             var entities = GAME.Manager.getEntities(),
                 i,
                 e,
+                ePos,
                 offsetX,
                 offsetY;
             
@@ -78,17 +77,10 @@ GAME.Renderer = (function () {
                 if(e.isOffscreen) {
                     continue;
                 }
-               
-                
-                offsetX = GAME.Manager.scrollX >> 0;
-                offsetY = GAME.Manager.scrollY >> 0;
-
-                if (e.hasOwnProperty('isPlayer')) {
-                    offsetX = offsetY = 0;
-                }
+                ePos = GAME.Manager.getEntityMapPos(e);
 
                 bufferContext.drawImage(GAME.Manager.getImage(), 1 + e.dir*34 + e.currentFrame*17, 1 + e.cropY, e.width, e.height, 
-                                  (e.x - offsetX) >> 0, (e.y - offsetY) >> 0,  e.width, e.height);
+                                  (ePos.x - GAME.Manager.scrollX) >> 0, (ePos.y - GAME.Manager.scrollY) >> 0,  e.width, e.height);
 
             }
             

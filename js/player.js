@@ -42,8 +42,6 @@ GAME.Component.player = function (arg_x, arg_y) {
                         this.y += my * speed;
                     }
 
-                    this.dir = 0;
-
                 }
 
 
@@ -55,9 +53,6 @@ GAME.Component.player = function (arg_x, arg_y) {
                         this.y += my * speed;
                     }
 
-
-                    this.dir = 2;
-
                 }
                 
                 if (mx > 0) {
@@ -66,7 +61,6 @@ GAME.Component.player = function (arg_x, arg_y) {
                     } else { 
                         this.x += mx * speed;
                     }
-                    this.dir = 3;
                 }
 
                 if (mx < 0) {
@@ -77,7 +71,6 @@ GAME.Component.player = function (arg_x, arg_y) {
                         this.x += mx * speed;
                     }
 
-                    this.dir = 1;
                 }
 
             }
@@ -107,14 +100,18 @@ GAME.Component.player = function (arg_x, arg_y) {
 
             if (GAME.Input.keyRight()) {
                 mx = 1;
+                this.dir = 3;
             } else if (GAME.Input.keyLeft()) {
                 mx = -1;
+                this.dir = 1;
             }
 
             if (GAME.Input.keyDown()) {
                 my = 1;
+                this.dir = 0;
             } else if (GAME.Input.keyUp()) {
                 my = -1;
+                this.dir = 2;
             }
             
             if(mx != 0 && my != 0){
